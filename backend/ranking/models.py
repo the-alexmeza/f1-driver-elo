@@ -16,7 +16,7 @@ class Driver(models.Model):
     dob = models.DateField()
     nationality = models.CharField(max_length=30)
     url = models.URLField()
-    elo = models.PositiveIntegerField(
+    elo = models.FloatField(
         default=getattr(settings, "STARTING_ELO"))
 
     def __str__(self):
@@ -78,8 +78,8 @@ class RaceResult(models.Model):
 class EloDelta(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
-    startingElo = models.PositiveIntegerField()
-    endingElo = models.PositiveIntegerField()
+    startingElo = models.FloatField()
+    endingElo = models.FloatField()
 
     def __str__(self) -> str:
         return f'<EloDelta {self.driverId + "-" + self.raceId}>'
