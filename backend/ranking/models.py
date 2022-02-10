@@ -23,7 +23,8 @@ class Driver(models.Model):
         return f'<Driver {self.id}>'
 
     def ChangeRating(self, race, elo):
-        delta = EloDelta(self, race, self.elo, elo)
+        delta = EloDelta(driver=self, race=race,
+                         startingElo=self.elo, endingElo=elo)
         delta.save()
         self.elo = elo
         self.save()
@@ -37,7 +38,7 @@ class Circuit(models.Model):
     country = models.CharField(max_length=50)
     lat = models.DecimalField(decimal_places=6, max_digits=10)
     lng = models.DecimalField(decimal_places=6, max_digits=10)
-    alt = models.IntegerField()
+    alt = models.IntegerField(blank=True, null=True)
     url = models.URLField()
 
     def __str__(self):
@@ -48,6 +49,7 @@ class Race(models.Model):
     id = models.IntegerField(primary_key=True)
     # probably shouldn't be an int field
     year = models.IntegerField()
+    # TODO: Consider adding round # in the future
     circuit = models.ForeignKey(Circuit, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     date = models.DateField()
@@ -69,19 +71,15 @@ class RaceResult(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     position = models.IntegerField()
 
+    class Meta:
+        ordering = ('position', )
+
 
 class EloDelta(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     startingElo = models.PositiveIntegerField()
     endingElo = models.PositiveIntegerField()
-
-    def __init__(self, driver, race, startingElo, endingElo):
-        self.driver = driver
-        self.race = race
-        self.startingElo = startingElo
-        self.endingElo = endingElo
-        self.save()
 
     def __str__(self) -> str:
         return f'<EloDelta {self.driverId + "-" + self.raceId}>'
