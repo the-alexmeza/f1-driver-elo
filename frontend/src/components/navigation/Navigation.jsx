@@ -59,7 +59,7 @@ function Navigation(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
@@ -69,19 +69,13 @@ function Navigation(props) {
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
             aria-label="menu"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            align="left"
-          >
+          <Typography variant="h6" component="div" noWrap>
             Driver Elo
           </Typography>
         </Toolbar>
@@ -128,7 +122,10 @@ function Navigation(props) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      />
+      >
+        <Toolbar />
+        {props.children}
+      </Box>
     </Box>
   );
 }
