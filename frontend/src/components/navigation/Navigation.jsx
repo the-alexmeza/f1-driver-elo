@@ -12,6 +12,7 @@ import {
   Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import Content from "../content/Content";
 
 const drawerWidth = 240;
 
@@ -70,6 +71,7 @@ function Navigation(props) {
             size="large"
             edge="start"
             aria-label="menu"
+            color="inherit"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
@@ -115,17 +117,7 @@ function Navigation(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <Toolbar />
-        {props.children}
-      </Box>
+      <Content drawerWidth={drawerWidth}>{props.children}</Content>
     </Box>
   );
 }
