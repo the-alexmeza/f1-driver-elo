@@ -11,7 +11,7 @@ class CircuitView(viewsets.ModelViewSet):
 
 class DriverView(viewsets.ModelViewSet):
     serializer_class = DriverSerializer
-    queryset = Driver.objects.all()
+    queryset = Driver.objects.all().order_by('-elo')
 
 
 class RaceView(viewsets.ModelViewSet):

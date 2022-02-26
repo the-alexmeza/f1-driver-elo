@@ -1,5 +1,12 @@
-import React from "react";
-import { Grid, Card, CardContent, Typography, Container } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Container,
+  TablePagination,
+} from "@mui/material";
 import {
   TableRow,
   Paper,
@@ -9,6 +16,7 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import axios from "axios";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -54,11 +62,64 @@ const tempTable = (
   </TableContainer>
 );
 
+function orderDriversByElo(driverlist) {
+  // TODO: Implement
+  driverlist.sort(function (a, b) {
+    return a.elo > b.elo;
+  });
+  return driverlist;
+}
+
 function Drivers() {
+  const [drivers, setDrivers] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:8000/api/drivers/").then((response) => {
+      setDrivers(response.data);
+    });
+  }, []);
+
+  const driverTable = (
+    <TableContainer component={Paper} sx={{ p: 4 }}>
+      <Table
+        sx={{
+          minWidth: 650,
+          overflowX: "auto",
+          overflowY: "auto",
+          maxHeight: 650,
+        }}
+        aria-label="simple table"
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Number</TableCell>
+            <TableCell align="right">Nationality</TableCell>
+            <TableCell align="right">Elo</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {drivers.map((driver) => (
+            <TableRow
+              key={driver.forename + "-" + driver.surname}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {driver.forename + " " + driver.surname}
+              </TableCell>
+              <TableCell align="right">{driver.number}</TableCell>
+              <TableCell align="right">{driver.nationality}</TableCell>
+              <TableCell align="right">{driver.elo}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
   return (
     <Grid container spacing={4}>
       <Grid item sm={8} xs={12}>
-        {tempTable}
+        {driverTable}
       </Grid>
       <Grid item sm={4} xs={12}>
         <Card component={Container}>
