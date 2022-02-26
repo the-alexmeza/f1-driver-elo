@@ -84,10 +84,8 @@ function Drivers() {
         sx={{
           minWidth: 650,
           overflowX: "auto",
-          overflowY: "auto",
-          maxHeight: 650,
         }}
-        aria-label="simple table"
+        aria-label="driver rankings"
       >
         <TableHead>
           <TableRow>
