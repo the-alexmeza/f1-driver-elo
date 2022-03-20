@@ -17,6 +17,8 @@ import {
   TableBody,
 } from "@mui/material";
 import axios from "axios";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { FixedSizeList as List } from "react-window";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
